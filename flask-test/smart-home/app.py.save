@@ -1,0 +1,26 @@
+from flask import Flask
+import RPi.GPIO as GPIO
+
+app=Flask(__name__)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+LED = 17
+GPIO.setup(LED,GPIO.OUT)
+# GPIO.output(LED,GPIO.OUT)
+# ledstats=GPIO.LOW
+@app.route('/')
+def index():
+
+    return 'Welcom to the smart home System'
+
+@app.route('/turn-on')
+def onlight():
+    GPIO.output(LED,GPIO.HIGH)
+@app.route('/turn-off')
+def offlight():
+    off= GPIO.output(LED,GPIO.HIGH)
+re
+if __name__ == '__main__':
+    app.run(port=5000,debug=True)
+
