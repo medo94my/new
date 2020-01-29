@@ -1,8 +1,9 @@
 from flask import Flask
 import RPi.GPIO as GPIO
 import time
+import picamera
 app=Flask(__name__)
-
+counter =0
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 LED = 27
@@ -25,11 +26,16 @@ def offlight():
     return 'lights off'
 @app.route('/take-pic')
 def pic():
-    for count in range(5):
-        GPIO.output(LED,GPIO.HIGH)
-        time.sleep(1)
-        GPIO.output(LED,GPIO.LOW)
-        time.sleep(.5)
+    global counter
+    path='/home/pi/new/flask-test/images/'
+    with picamera.PiCamera() as camera:
+        camera.resolution = (1280,720)
+        camera.capture(path+"anny-{}.jpg".format(counter))
+        counter+=1
+    return'Picture Saved'
+
+
+
     return 'camera'
 @app.route('/ac-on')
 def ac_on():
